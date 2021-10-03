@@ -1,0 +1,32 @@
+---
+title: "Linear Regression with Time Series Data"
+author: "Andrew Nalundasan"
+date: "9/29/2021"
+output: html_document
+---
+
+
+```{r}
+# Load libraries
+
+library(readxl)
+library(dynlm)
+```
+
+```{r}
+# read in data and create objects
+data1 <- read_excel("02_raw_data/Table2_3_Data.xls")
+
+# create time series object for dynamic price
+dp <- ts(data1$'D_Price (%)', frequency = 1, start = 1971)
+dr <- ts(data1$'D_Rate (%)', frequency = 1, start = 1971)
+```
+
+```{r}
+# create linear regression for time series data
+model1 <- dynlm(dp ~ lag(dp, -1) + lag(dr, -1))
+summary(model1)
+```
+
+
+
